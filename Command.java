@@ -35,6 +35,10 @@ public class Command {
         exec("wmctrl -F -r "+name+" -e 0,"+x.toString()+","+y.toString()+","+w.toString()+","+h.toString());
     }
 
+    public void getOSTypes() {
+        exec("VBoxManage list ostypes");
+    }
+
     private void exec(String cmd) {
         Process p;
         try {
@@ -61,4 +65,5 @@ public class Command {
             excpt_msg = e.getMessage(); 
         }
     }
+
 }

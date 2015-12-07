@@ -17,7 +17,6 @@ public class Navigator extends JFrame {
 
     //lists
     private ArrayList<JButton>   buttons;
-    //private ArrayList<Workspace> spaces;
 
     //
     private Desktop desktop  = null;
@@ -61,14 +60,20 @@ public class Navigator extends JFrame {
             button.setForeground(foreground);
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //do something
+                    if(debug) {
+                        if(desktop.spaces != null) { 
+                            for(int k=0; k<desktop.spaces.size(); k++) 
+                                System.out.println(desktop.spaces.get(k).name);
+                        }
+                    }
+                    new NewDesktop(desktop.spaces); 
                 }
             });
             buttons.add(button);
             panel.add(button);
 
             for(int i=0; i<num_spaces; i++) {
-                button = new JButton(); 
+                button = new JButton(desktop.spaces.get(i).name); 
                 button.setIcon(img_local);
                 if(desktop.select.equals(i)) {
                     button.setBackground(highlight);
