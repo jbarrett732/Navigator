@@ -30,22 +30,22 @@ public class Validator {
 
     public String ipv4Address(String data) {
         if(data.matches("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$")) {
-            String[] bytes = data.split("."); 
+            String[] bytes = data.split("\\."); 
             try {
                 if(bytes.length == 4) {
-                    if(256 < Integer.parseInt(bytes[0]) 
-                        && -1  > Integer.parseInt(bytes[0]) 
-                        && 256 < Integer.parseInt(bytes[1])
-                        && -1  > Integer.parseInt(bytes[1])
-                        && 256 < Integer.parseInt(bytes[2])
-                        && -1  > Integer.parseInt(bytes[2])
-                        && 256 < Integer.parseInt(bytes[3])
-                        && -1  > Integer.parseInt(bytes[3])
+                    if(256 > Integer.parseInt(bytes[0]) 
+                        && -1  < Integer.parseInt(bytes[0]) 
+                        && 256 > Integer.parseInt(bytes[1])
+                        && -1  < Integer.parseInt(bytes[1])
+                        && 256 > Integer.parseInt(bytes[2])
+                        && -1  < Integer.parseInt(bytes[2])
+                        && 256 > Integer.parseInt(bytes[3])
+                        && -1  < Integer.parseInt(bytes[3])
                     ) {
                         return data;
                     } 
                     return null;
-                }
+                } 
                 return null;
             } catch (Exception e) {
                 return null;

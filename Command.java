@@ -39,6 +39,10 @@ public class Command {
         exec("VBoxManage list ostypes");
     }
 
+    public void createRemoteDesktop(String userName, String ipAddr) {
+        Runtime.getRuntime().exec("rdesktop -u "+userName+" -g 100% -PKD "+ipAddr);
+    }
+
     private void exec(String cmd) {
         Process p;
         try {
@@ -64,6 +68,16 @@ public class Command {
         } catch (Exception e) {
             excpt_msg = e.getMessage(); 
         }
+    }
+
+    public void printStats() {
+        System.out.println("Output:");
+        for(int i=0; i<output.size(); i++) {
+            System.out.println(output.get(i));
+        }
+        System.out.println("Exit Value:"+exitValue);
+        System.out.println("Error Msg:"+error_msg);
+        System.out.println("Excpt Msg:"+excpt_msg);
     }
 
 }

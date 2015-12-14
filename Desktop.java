@@ -97,6 +97,14 @@ public class Desktop {
         }
     }
 
+    public String[] getNameSpaces() {
+        String[] names = new String[spaces.size()];
+        for(int i=0; i<spaces.size(); i++) {
+            names[i] = spaces.get(i).name;
+        }
+        return names;
+    }
+
     public Integer selectX() {
         return spaces.get(select).view_x;
     }

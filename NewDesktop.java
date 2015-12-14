@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ public class NewDesktop extends JFrame {
     private ImageIcon img_remote  = new ImageIcon("images/img_remote.png" );
     private ImageIcon img_virtual = new ImageIcon("images/img_virtual.png");
     
+    private ArrayList<Workspace> spaces;
     private String[] names;
     private JPanel   vm_panel = new JPanel(new GridLayout(8,2));
     private JPanel   rm_panel = new JPanel(new GridLayout(8,2));
@@ -58,6 +60,7 @@ public class NewDesktop extends JFrame {
     private JButton                    create_rm;
  
     public NewDesktop(ArrayList<Workspace> list) {
+        spaces = list;
         names = new String[list.size()];
         for(int i=0; i<list.size(); i++) {
             names[i] = list.get(i).name;
@@ -95,7 +98,7 @@ public class NewDesktop extends JFrame {
                 memory = v.getInt(text_memory.getText()); 
                 vram = v.getInt(text_vram.getText()); 
                 vm_space = workspaces_vm.getSelectedIndex();
-
+/*
                 System.out.println(vm_name);
                 System.out.println(disk);
                 System.out.println(os_type);
@@ -103,6 +106,7 @@ public class NewDesktop extends JFrame {
                 System.out.println(memory);
                 System.out.println(vram);
                 System.out.println(vm_space);
+*/
                 if(vm_name    != null 
                   && disk     != null 
                   && os_type  != null 
@@ -112,6 +116,37 @@ public class NewDesktop extends JFrame {
                   && vm_space != null 
                 ) {
                     //create virtual machine 
+                    Workspace desk_space = spaces.get(vm_space); 
+/*
+                    System.out.println("View_x:"+desk_space.view_x);
+                    System.out.println("View_y:"+desk_space.view_y);
+                    System.out.println("Work_x:"+desk_space.work_x);
+                    System.out.println("Work_y:"+desk_space.work_y);
+                    System.out.println("Work_w:"+desk_space.work_w);
+                    System.out.println("Work_h:"+desk_space.work_h);
+*/
+                    //set JFrame properties
+                    JFrame frame = new JFrame();
+                    frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    frame.setTitle(vm_name);
+                    frame.setSize(400,400);
+                    frame.setVisible(true);
+
+                    //move window into workspace
+                    Command move_cmd1 = new Command(); 
+                    move_cmd1.moveWindow(
+                        vm_name,
+                        desk_space.work_x,
+                        desk_space.work_y,
+                        desk_space.work_w,
+                        desk_space.work_h
+                    );
+                    move_cmd1.printStats();
+
+                    setVisible(false);
+                    dispose(); 
+
+                    JOptionPane.showMessageDialog(frame, vm_name+" Virtual Machine Created Successfully!");
                 }
             }
         });
@@ -121,7 +156,7 @@ public class NewDesktop extends JFrame {
             }
         });
 
-        //setup for vm form
+        //setup for rm form
         workspaces_rm = new JComboBox<String>(names);
         create_rm = new JButton("Create Remote Desktop");
         create_rm.addActionListener(new ActionListener() {
@@ -132,6 +167,7 @@ public class NewDesktop extends JFrame {
                 user_name  = v.alphanumeric(text_user_name.getText());
                 rm_space = workspaces_rm.getSelectedIndex();
 
+                System.out.println(text_ip_address.getText());
                 System.out.println(rm_name);
                 System.out.println(ip_address);
                 System.out.println(user_name);
@@ -143,6 +179,45 @@ public class NewDesktop extends JFrame {
                   && rm_space   != null
                 ) {
                     //create remote desktop
+                    Workspace desk_space = spaces.get(rm_space); 
+
+                    System.out.println("View_x:"+desk_space.view_x);
+                    System.out.println("View_y:"+desk_space.view_y);
+                    System.out.println("Work_x:"+desk_space.work_x);
+                    System.out.println("Work_y:"+desk_space.work_y);
+                    System.out.println("Work_w:"+desk_space.work_w);
+                    System.out.println("Work_h:"+desk_space.work_h);
+
+                    //set JFrame properties
+                    JFrame frame = new JFrame();
+                    frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    frame.setTitle(rm_name);
+                    //setIconImage(img_window.getImage());
+                    frame.setSize(400,400);
+                    frame.setVisible(true);
+
+                    //move window into workspace
+                    Command move_cmd1 = new Command(); 
+                    move_cmd1.moveWindow(
+                        vm_name,
+                        desk_space.work_x,
+                        desk_space.work_y,
+                        desk_space.work_w,
+                        desk_space.work_h
+                    );
+                    move_cmd1.printStats();
+
+                    Command move_cmd2 = new Command();
+                    move_cmd2.moveViewPort(
+                        desk_space.view_x,
+                        desk_space.view_y
+                    );
+                    move_cmd2.printStats();
+                    
+                    setVisible(false);
+                    dispose(); 
+
+                    JOptionPane.showMessageDialog(frame, rm_name+" Remote Desktop Created Successfully!");
                 }
             }
         });
